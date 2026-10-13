@@ -1,0 +1,58 @@
+<!doctype html>
+<!--
+  Source of the share image (static/assets/img/og.png, 1200×630).
+  To render it again, with Chrome installed:
+    chrome --headless=new --hide-scrollbars --window-size=1200,630 --screenshot=static/assets/img/og.png design/og.html
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="../static/assets/css/ds/fonts.css">
+  <link rel="stylesheet" href="../static/assets/css/ds/colors.css">
+  <link rel="stylesheet" href="../static/assets/css/ds/typography.css">
+  <link rel="stylesheet" href="../static/assets/css/ds/spacing.css">
+  <link rel="stylesheet" href="../static/assets/css/ds/base.css">
+  <style>
+    html, body { width: 1200px; height: 630px; overflow: hidden; }
+    body {
+      position: relative;
+      display: grid; grid-template-columns: 1fr 380px; align-items: center; gap: 48px;
+      padding: 0 88px;
+      background:
+        radial-gradient(ellipse 55% 75% at 80% 50%, color-mix(in oklab, var(--accent) 22%, transparent), transparent 70%),
+        radial-gradient(circle at center, color-mix(in oklab, var(--ink) 12%, transparent) 0.6px, transparent 0.8px);
+      background-size: auto, 24px 24px;
+    }
+    .copy { display: flex; flex-direction: column; gap: 26px; }
+    .eyebrow { font-family: var(--font-mono); font-size: 15px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); }
+    h1 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 76px; line-height: 1.02; color: var(--ink); }
+    h1 em { color: var(--gold); font-style: italic; }
+    p { margin: 0; font-style: italic; font-size: 26px; color: var(--text-muted); }
+    .mark { position: relative; display: grid; place-items: center; width: 380px; height: 380px; }
+    .mark svg { position: absolute; inset: 0; }
+    .mark img { width: 62%; filter: drop-shadow(0 0 40px color-mix(in oklab, var(--accent) 45%, transparent)); }
+    .rule { position: absolute; left: 88px; right: 88px; bottom: 56px; display: flex; justify-content: space-between;
+      padding-top: 18px; border-top: 0.5px solid var(--rule-strong);
+      font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-faint); }
+    .rule b { font-weight: 400; color: var(--gold); }
+  </style>
+</head>
+<body>
+  <div class="copy">
+    <span class="eyebrow">Stein Project · Stein Client</span>
+    <h1>Minecraft 1.8.9, <em>modernized</em>.</h1>
+    <p>Higher FPS on crowded servers. Built for PvP.</p>
+  </div>
+  <div class="mark">
+    <svg viewBox="0 0 400 400" fill="none">
+      <circle cx="200" cy="200" r="196" stroke="rgba(232,225,245,.22)" stroke-width=".8"/>
+      <circle cx="200" cy="200" r="168" stroke="rgba(184,156,217,.45)" stroke-width=".8" stroke-dasharray="2 6"/>
+      <circle cx="200" cy="200" r="140" stroke="rgba(232,225,245,.10)" stroke-width=".8"/>
+      <circle cx="338" cy="62" r="4" fill="#7c4dff"/>
+      <circle cx="32" cy="200" r="3" fill="#b89cd9"/>
+    </svg>
+    <img src="../static/assets/img/stein-client.png" alt="">
+  </div>
+  <div class="rule"><span>Engine <b>Java 25 · LWJGL 3</b></span><span>License <b>EULA Friendly</b></span></div>
+</body>
+</html>

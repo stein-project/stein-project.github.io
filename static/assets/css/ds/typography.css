@@ -1,0 +1,47 @@
+/* tokens/typography.css — Schaffer Labs type system.
+
+   Three families, each with one job:
+     · Cinzel       — display. Roman-carved caps. Titles, product names,
+                       big numbers. Often italic for the "gold" emphasis word.
+     · EB Garamond  — body & editorial. Italic is used heavily for taglines
+                       and quiet asides.
+     · JetBrains Mono — data, labels, HUD readouts, hashes. Always uppercase,
+                       wide letter-spacing, small. The "machine" voice. */
+
+:root {
+  /* ── families ────────────────────────────────────────────────────────── */
+  --font-display: 'Cinzel', 'Times New Roman', serif;
+  --font-body:    'EB Garamond', 'Georgia', serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace;
+
+  /* back-compat short aliases used across the site */
+  --display: var(--font-display);
+  --body:    var(--font-body);
+  --mono:    var(--font-mono);
+
+  /* ── display scale (fluid) ───────────────────────────────────────────── */
+  --text-hero:    clamp(56px, 11vw, 168px);  /* brand wordmark            */
+  --text-display: clamp(44px, 7vw, 108px);   /* section / convene titles  */
+  --text-title:   clamp(34px, 4vw, 64px);    /* product names             */
+  --text-h2:      clamp(28px, 3.2vw, 44px);
+
+  /* ── editorial body ──────────────────────────────────────────────────── */
+  --text-lead:    clamp(17px, 1.6vw, 22px);  /* italic taglines           */
+  --text-body-lg: 19px;
+  --text-body:    16px;
+  --text-small:   14px;
+
+  /* ── machine voice (mono) ────────────────────────────────────────────── */
+  --text-label:   11px;   /* default mono label  */
+  --text-micro:   10px;   /* HUD readouts        */
+  --tracking-label: 0.08em;
+  --tracking-wide:  0.16em;
+
+  /* ── weights & leading ───────────────────────────────────────────────── */
+  --weight-regular: 400;
+  --weight-medium:  500;
+  --weight-semibold: 600;
+  --leading-tight:  0.92;
+  --leading-snug:   1.05;
+  --leading-body:   1.55;
+}

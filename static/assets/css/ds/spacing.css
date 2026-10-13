@@ -1,0 +1,40 @@
+/* tokens/spacing.css — spacing, page rhythm, radii, shadows.
+
+   The system has almost no rounded corners (it is angular and hairline-ruled)
+   except the fully-rounded pill used on every CTA and tag. Shadows exist only
+   as violet glows around the primary CTA — surfaces are flat, separated by
+   0.5px hairline rules, never by elevation. */
+
+:root {
+  /* ── page rhythm ─────────────────────────────────────────────────────── */
+  --gutter:  clamp(20px, 4vw, 56px);   /* @kind spacing */
+  --hud-pad: clamp(16px, 2.4vw, 36px); /* corner HUD inset             */
+  --section-y: clamp(80px, 12vw, 160px); /* @kind spacing */
+
+  /* ── spacing scale ───────────────────────────────────────────────────── */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 14px;
+  --space-4: 18px;
+  --space-5: 24px;
+  --space-6: 36px;
+  --space-7: 56px;
+  --space-8: 80px;
+
+  /* ── hairline ────────────────────────────────────────────────────────── */
+  --hairline: 0.5px;
+
+  /* ── radii ───────────────────────────────────────────────────────────── */
+  --radius-none: 0;
+  --radius-pill: 999px;   /* CTAs, tags — the only rounded shape          */
+
+  /* ── glows (violet, never grey drop-shadows) ─────────────────────────── */
+  --glow-cta:
+    0 0 0 1px color-mix(in oklab, var(--accent) 50%, transparent),
+    0 14px 50px color-mix(in oklab, var(--accent) 45%, transparent),
+    0 1px 0 rgba(255,255,255,.2) inset;
+  --glow-cta-hover:
+    0 0 0 1px color-mix(in oklab, var(--accent) 60%, transparent),
+    0 22px 70px color-mix(in oklab, var(--accent) 65%, transparent),
+    0 1px 0 rgba(255,255,255,.24) inset;
+}

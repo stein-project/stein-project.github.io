@@ -1,0 +1,24 @@
+/* tokens/motion.css — motion language.
+
+   Movement is slow, continuous and orbital — nothing bounces. Hovers are
+   quick eased fades/lifts (200–350ms); ambient ornament (rings, satellites,
+   sigils, conic halos) rotates on long linear loops measured in seconds.
+   Decorative loops should respect prefers-reduced-motion in product code. */
+
+:root {
+  /* ── durations ───────────────────────────────────────────────────────── */
+  --dur-fast:   200ms; /* @kind other */
+  --dur-base:   250ms; /* @kind other */
+  --dur-slow:   350ms; /* @kind other */
+
+  /* ── easing ──────────────────────────────────────────────────────────── */
+  --ease-standard: cubic-bezier(.3, .7, .4, 1);  /* @kind other */
+  --ease-out:      ease-out; /* @kind other */
+  --ease-in-out:   ease-in-out; /* @kind other */
+
+  /* ── ambient rotation periods (long, linear) ─────────────────────────── */
+  --spin-fast:  18s;   /* @kind other */
+  --spin-med:   26s;   /* @kind other */
+  --spin-slow:  80s;   /* @kind other */
+  --halo-spin:  8s;    /* @kind other */
+}

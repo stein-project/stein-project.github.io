@@ -1,0 +1,19 @@
+{
+  "name": "stein-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Site do Stein: landing page, downloads, anúncios e changelog, publicados no GitHub Pages.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "build:offline": "node scripts/build.mjs --offline",
+    "dev": "node scripts/build.mjs --offline --drafts && node scripts/serve.mjs",
+    "serve": "node scripts/serve.mjs"
+  },
+  "dependencies": {
+    "marked": "^18.0.0"
+  }
+}

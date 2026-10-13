@@ -1,0 +1,66 @@
+/* tokens/colors.css — Schaffer Labs color system.
+
+   The brand is "occult-technical": a near-black violet field, lavender ink,
+   a muted gold for ritual marks, and a single saturated electric violet as
+   the live/energy accent. Everything else is derived from translucent ink
+   (hairline rules) so the palette stays disciplined.
+
+   Four named schemes ship as theme scopes ([data-palette="…"]); Vesper is the
+   default applied on :root. The runtime swaps the base vars live, but
+   consumers can also just set data-palette on a container. */
+
+:root {
+  /* ── base palette (Vesper — default) ─────────────────────────────────── */
+  --bg:          #0a0614;   /* near-black violet field            */
+  --ink:         #e8e1f5;   /* lavender-white primary text        */
+  --gold:        #b89cd9;   /* muted violet-gold — ritual marks   */
+  --accent:      #7c4dff;   /* electric violet — energy / live    */
+
+  /* ── hairline rules (translucent ink) ────────────────────────────────── */
+  --rule:        rgba(232, 225, 245, 0.10);
+  --rule-strong: rgba(232, 225, 245, 0.22);
+
+  /* ── fixed non-themed values ─────────────────────────────────────────── */
+  --on-accent:   #ffffff;   /* text on the violet CTA             */
+  --pure-black:  #000000;
+
+  /* ── semantic aliases — prefer these in product code ─────────────────── */
+  --surface:            var(--bg);
+  --surface-sunken:     color-mix(in oklab, var(--bg) 92%, #000 8%);
+  --surface-raised:     color-mix(in oklab, var(--bg) 88%, #000 12%);
+  --surface-card:       var(--bg);
+
+  --text-primary:       var(--ink);
+  --text-muted:         color-mix(in oklab, var(--ink) 55%, transparent);
+  --text-faint:         color-mix(in oklab, var(--ink) 35%, transparent);
+  --text-ritual:        var(--gold);     /* numbers, eyebrows, marks */
+  --text-on-accent:     var(--on-accent);
+
+  --border-hairline:    var(--rule);
+  --border-strong:      var(--rule-strong);
+
+  --accent-soft:        color-mix(in oklab, var(--accent) 8%, transparent);
+  --accent-glow:        color-mix(in oklab, var(--accent) 45%, transparent);
+
+  --selection-bg:       var(--accent);
+  --selection-fg:       var(--bg);
+}
+
+/* ── named schemes ──────────────────────────────────────────────────────── */
+
+[data-palette="vesper"] {
+  --bg: #0a0614; --ink: #e8e1f5; --gold: #b89cd9; --accent: #7c4dff;
+  --rule: rgba(232,225,245,0.10); --rule-strong: rgba(232,225,245,0.22);
+}
+[data-palette="abyssus"] {
+  --bg: #070512; --ink: #d9d1f0; --gold: #9a7fc4; --accent: #5b3aff;
+  --rule: rgba(217,209,240,0.10); --rule-strong: rgba(217,209,240,0.22);
+}
+[data-palette="vinum"] {
+  --bg: #0d0612; --ink: #ecd9f0; --gold: #c995d4; --accent: #a13ee6;
+  --rule: rgba(236,217,240,0.10); --rule-strong: rgba(236,217,240,0.22);
+}
+[data-palette="obsidian"] {
+  --bg: #08070d; --ink: #d8d3e8; --gold: #8b7fb8; --accent: #4a3a99;
+  --rule: rgba(216,211,232,0.10); --rule-strong: rgba(216,211,232,0.22);
+}
