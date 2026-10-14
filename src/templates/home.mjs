@@ -5,7 +5,7 @@ import { brand, clientDownloadUrl, icon, modIcon, modSummary, postCard, releaseR
 
 /** The big download button; every call to action on the site leads to the same file. */
 export const downloadButton = (ctx, size = 'lg') =>
-  html`<a class="sl-btn sl-btn--accent sl-btn--${size} cta-glow" href="${clientDownloadUrl(ctx.config)}">${icon('down', 16)}${ctx.t.common.downloadClient}</a>`;
+  html`<a class="sl-btn sl-btn--accent sl-btn--${size} cta-glow" href="${clientDownloadUrl(ctx)}">${icon('down', 16)}${ctx.t.common.downloadClient}</a>`;
 
 /** Version, size and requirement under a download button. */
 export function downloadNote(ctx) {

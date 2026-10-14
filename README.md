@@ -41,13 +41,14 @@ shows up on the site without anyone touching it.
 
 ### Downloads
 
-The latest release of each product in `site.config.mjs` (`products`): version, date, size and SHA-256.
+The latest release of each product in `site.config.mjs` (`products`), from its source repository or, for versions
+before the move, the frozen distribution repository (`stein-*`): version, date, size and SHA-256.
 A product with no release doesn't show up. The Stein Client buttons point to
 `releases/latest/download/SteinClient.exe`, which never goes stale.
 
 ### Mods
 
-The official mods are the `sources` of the Stein Loader index (`modIndex`), the same list Stein Client and
+The official mods are the `sources` of the Stein Loader index (`modIndex`, the `stein.json` of the installer's latest release), the same list Stein Client and
 the installer read: a mod added there shows up here on the next build. Third-party mods are the indexes in
 `thirdPartySources`. Each index is a `steinmods.json` published with the mod's releases; the site shows its
 version, file, SHA-256, minimum Loader and, for third-party mods, the source link to paste in Stein Client.
