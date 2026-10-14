@@ -92,7 +92,7 @@ export function layout(ctx, page, content) {
 
       ${languageSwitcher(ctx, page, alternates)}
 
-      <a class="sl-btn sl-btn--accent topbar__cta" href="${clientDownloadUrl(config)}">
+      <a class="sl-btn sl-btn--accent topbar__cta" href="${clientDownloadUrl(ctx)}">
         ${icon('down', 14)}${t.nav.download}
       </a>
       <button class="topbar__toggle" type="button" aria-controls="nav" aria-expanded="false" aria-label="${t.nav.openMenu}" data-nav-toggle>

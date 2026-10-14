@@ -85,9 +85,11 @@ export const time = (ctx, date, format = formatDate) =>
 /** The address that always serves a file from the latest release, so links never go stale. */
 export const latestUrl = (repo, file) => `https://github.com/${repo}/releases/latest/download/${file}`;
 
-export const clientDownloadUrl = (config) => {
-  const client = config.products.find((product) => product.id === 'client');
-  return latestUrl(client.releases, client.files[0]);
+/** The client's download: the latest release's own repository, so the link moves with the releases. */
+export const clientDownloadUrl = (ctx) => {
+  const client = ctx.downloads.find((item) => item.product.id === 'client');
+  const product = ctx.config.products.find((item) => item.id === 'client');
+  return latestUrl(client?.release.repo ?? product.releases[0], product.files[0]);
 };
 
 /** A card's download: the main button, the file's name and size, and its SHA-256 on demand. */

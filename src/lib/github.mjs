@@ -29,14 +29,14 @@ export async function loadData({ config, cacheDir, offline }) {
     }
   }
 
-  const index = await fetchJson(config.modIndex);
+  const index = await firstJson(config.modIndex);
   const sources = [
     ...(index.sources ?? []).map((url) => ({ url, official: true })),
     ...config.thirdPartySources.map((url) => ({ url, official: false })),
   ];
 
   const [products, modLists] = await Promise.all([
-    Promise.all(config.products.map(async (product) => [product.id, await fetchReleases(product.releases)])),
+    Promise.all(config.products.map(async (product) => [product.id, await productReleases(product.releases)])),
     Promise.all(sources.map(loadSource)),
   ]);
   const mods = modLists.flat();
@@ -98,6 +98,25 @@ async function fetchJson(url) {
   return response.json();
 }
 
+/** The first of the addresses that answers, as JSON. */
+async function firstJson(urls) {
+  let last;
+  for (const url of urls) {
+    try {
+      return await fetchJson(url);
+    } catch (error) {
+      last = error;
+    }
+  }
+  throw last;
+}
+
+/** The releases of every repository of a product, together, newest first. */
+async function productReleases(repos) {
+  const lists = await Promise.all(repos.map(fetchReleases));
+  return lists.flat().sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
+}
+
 /** Published releases, newest first, without drafts or pre-releases. */
 async function fetchReleases(repo) {
   const response = await fetch(`${API}/repos/${repo}/releases?per_page=100`, { headers: apiHeaders() });
@@ -112,6 +131,7 @@ async function fetchReleases(repo) {
   return list
     .filter((release) => !release.draft && !release.prerelease)
     .map((release) => ({
+      repo,
       tag: release.tag_name,
       version: release.tag_name.replace(/^v/, ''),
       name: release.name,
@@ -151,7 +171,7 @@ async function fetchChangelog(repo) {
 }
 
 /**
- * @typedef {{ tag: string, version: string, name: string, url: string, publishedAt: string, body: string,
+ * @typedef {{ repo: string, tag: string, version: string, name: string, url: string, publishedAt: string, body: string,
  *   assets: { name: string, size: number, url: string, sha256: string | null }[] }} Release
  * @typedef {{ id: string, name: string, file: string, version: string, url: string, sha256: string,
  *   loader: string, description: string, author: string, homepage: string, source: string, repo: string,
