@@ -85,7 +85,7 @@ export function loadChangelog(config, data) {
       notes: data.notes[product.changelog] ?? {},
     })),
     ...data.mods.map((mod) => ({
-      component: { id: mod.id, label: mod.name, thirdParty: !mod.official },
+      component: { id: mod.id, label: mod.name, mod: true },
       releases: mod.releases,
       notes: data.notes[mod.repo] ?? {},
     })),

@@ -10,12 +10,20 @@ const PRELOAD_FONTS = ['cinzel-latin-400-normal', 'eb-garamond-latin-400-normal'
 
 const NAV = [
   { key: 'home', path: '/' },
-  { key: 'downloads', path: '/downloads/' },
+  { key: 'client', path: '/client/' },
+  { key: 'loader', path: '/loader/' },
   { key: 'mods', path: '/mods/' },
   { key: 'news', path: '/news/' },
   { key: 'changelog', path: '/changelog/' },
 ];
-const NUMERALS = ['I', 'II', 'III', 'IV', 'V'];
+const NUMERALS = ['I', 'II', 'III', 'IV', 'V', 'VI'];
+const FOOTER_NAV = [...NAV.slice(0, 4), { key: 'downloads', path: '/downloads/' }, ...NAV.slice(4)];
+
+/** The top bar's button follows the area: the choice is still open on the home page. */
+function downloadTarget(ctx, page) {
+  if (page.key === 'home') return ctx.href('/downloads/');
+  return page.key === 'loader' ? '#install' : clientDownloadUrl(ctx);
+}
 
 /**
  * The whole page: head, top bar, content and footer.
@@ -92,7 +100,7 @@ export function layout(ctx, page, content) {
 
       ${languageSwitcher(ctx, page, alternates)}
 
-      <a class="sl-btn sl-btn--accent topbar__cta" href="${clientDownloadUrl(ctx)}">
+      <a class="sl-btn sl-btn--accent topbar__cta" href="${downloadTarget(ctx, page)}">
         ${icon('down', 14)}${t.nav.download}
       </a>
       <button class="topbar__toggle" type="button" aria-controls="nav" aria-expanded="false" aria-label="${t.nav.openMenu}" data-nav-toggle>
@@ -115,7 +123,7 @@ export function layout(ctx, page, content) {
         <p class="footer__by">${format(t.footer.by, { author: config.author })}</p>
       </div>
       <nav class="footer__links mono" aria-label="${t.nav.footer}">
-        ${NAV.map((item) => html`<a href="${ctx.href(item.path)}">${t.nav[item.key]}</a>`)}
+        ${FOOTER_NAV.map((item) => html`<a href="${ctx.href(item.path)}">${t.nav[item.key]}</a>`)}
         <a href="${config.discord}" rel="noopener">${t.nav.discord}</a>
         <a href="${config.github}" rel="noopener">GitHub</a>
         <a href="${ctx.href('/news/feed.xml')}">RSS</a>

@@ -1,5 +1,6 @@
 import { html, raw } from '../lib/html.mjs';
 import { formatBytes, formatDate, isoDate } from '../lib/format.mjs';
+import { format } from '../i18n/index.mjs';
 
 /** Design system icons: stroke only, 24×24 (the Stein Client's ui/src/ds/Icon.tsx). */
 const ICONS = {
@@ -27,7 +28,7 @@ const ICONS = {
 };
 
 /** The icon of each known mod; any other mod gets the generic one. */
-const MOD_ICONS = { hud: 'grid', connect: 'plug', keybind: 'key', replay: 'replay' };
+const MOD_ICONS = { hud: 'grid', connect: 'plug', keybind: 'key', replay: 'replay', minimap: 'globe', mouse: 'copy', combat: 'shield' };
 export const modIcon = (id) => MOD_ICONS[id] ?? 'layers';
 
 export const iconSprite = html`<svg class="sprite" aria-hidden="true"><defs>${Object.entries(ICONS).map(
@@ -121,10 +122,13 @@ export const postCard = (ctx, post) => html`
     </a>
   </article>`;
 
+/** Where a release's notes are: each mod has a page of its own. */
+export const changelogPath = (entry) => (entry.component.mod ? `/changelog/${entry.component.id}/#${entry.id}` : `/changelog/#${entry.id}`);
+
 /** A compact release line, on the home page. */
 export const releaseRow = (ctx, entry) => html`
   <li class="release-row"${langAttr(ctx, entry)}>
-    <a href="${ctx.href(`/changelog/#${entry.id}`)}">
+    <a href="${ctx.href(changelogPath(entry))}">
       <span class="release-row__tag mono">${entry.component.label}</span>
       <span class="release-row__title">${entry.title}</span>
       <span class="release-row__date mono">${time(ctx, entry.date)}</span>
@@ -133,3 +137,41 @@ export const releaseRow = (ctx, entry) => html`
 
 /** What a mod does, in the page's language: the site's text when there is one, else the index's. */
 export const modSummary = (ctx, mod) => ctx.t.mods.summaries[mod.id] ?? mod.description;
+
+/** The big download button; every call to action on the site leads to the same file. */
+export const downloadButton = (ctx, size = 'lg') =>
+  html`<a class="sl-btn sl-btn--accent sl-btn--${size} cta-glow" href="${clientDownloadUrl(ctx)}">${icon('down', 16)}${ctx.t.common.downloadClient}</a>`;
+
+/** Version, size and requirement under a download button. */
+export function downloadNote(ctx) {
+  const { t, downloads } = ctx;
+  const client = downloads.find((item) => item.product.id === 'client');
+  return html`<p class="hero__note mono">${client ? html`${format(t.common.versionLine, { version: client.release.version, size: formatBytes(client.files[0].size, ctx.locale.intl) })} · ` : ''}${t.common.requirement}</p>`;
+}
+
+/** Numbered steps; each text may carry <code>. */
+export const steps = (items, modifier = '') => html`
+  <ol class="steps${modifier ? ` steps--${modifier}` : ''}">
+    ${items.map(([heading, text], index) => html`
+    <li><span class="steps__n mono">${String(index + 1).padStart(2, '0')}</span><div><h3>${heading}</h3><p>${raw(text)}</p></div></li>`)}
+  </ol>`;
+
+/** The Discord invitation, at the end of the pages. */
+export function community(ctx) {
+  const { t, config } = ctx;
+  return html`
+    <section class="section community" aria-labelledby="t-community">
+      <div class="wrap community__inner">
+        <img draggable="false" class="community__mark" src="${ctx.url('/assets/img/stein.png')}" width="88" height="88" alt="">
+        <h2 class="section__title" id="t-community">${title(t.community.title)}</h2>
+        <p class="section__lead">${t.community.lead}</p>
+        <a class="discord-btn" href="${config.discord}" rel="noopener">
+          <span class="discord-btn__glow"></span>
+          ${brand('discord', 26)}
+          <span class="discord-btn__lbl">${t.community.button}</span>
+          <span class="discord-btn__sep"></span>
+          <span class="discord-btn__url">${config.discord.replace(/^https:\/\//, '')}</span>
+        </a>
+      </div>
+    </section>`;
+}

@@ -2,8 +2,7 @@ import { escape, html, raw } from '../lib/html.mjs';
 import { formatBytes, formatLongDate, isoDate } from '../lib/format.mjs';
 import { renderMarkdown } from '../lib/markdown.mjs';
 import { format } from '../i18n/index.mjs';
-import { community, downloadButton, steps } from './home.mjs';
-import { downloadFile, icon, langAttr, pageHead, postCard, sectionHead, time, title } from './partials.mjs';
+import { community, downloadButton, downloadFile, icon, langAttr, pageHead, postCard, sectionHead, steps, time, title } from './partials.mjs';
 
 /* ── Downloads ──────────────────────────────────────────────────────────── */
 
@@ -14,7 +13,7 @@ export function downloadsPage(ctx) {
   const manual = downloads.filter((item) => item.product.id !== 'client');
 
   return html`
-    ${pageHead('II', d.label, d.heading, d.lead)}
+    ${pageHead('', d.label, d.heading, d.lead)}
 
     <section class="section section--tight">
       <div class="wrap">
@@ -91,7 +90,7 @@ export function newsPage(ctx) {
   const [latest, ...older] = posts;
 
   return html`
-    ${pageHead('IV', n.label, n.heading, n.lead)}
+    ${pageHead('V', n.label, n.heading, n.lead)}
 
     <section class="section section--tight">
       <div class="wrap">
@@ -150,43 +149,78 @@ export function postPage(ctx, post) {
 
 /* ── Changelog ──────────────────────────────────────────────────────────── */
 
+/** The Stein Client, the Stein Loader and the SDK; each mod has a page of its own. */
 export function changelogPage(ctx) {
   const { t, changelog } = ctx;
   const c = t.changelog;
-  const present = [...new Map(changelog.map((entry) => [entry.component.id, entry.component])).values()];
-  // A single notice at the top for the notes not translated yet; each carries the badge of the language it is shown in.
-  const fallback = changelog.find((entry) => entry.fallback)?.fallback;
+  const entries = changelog.filter((entry) => !entry.component.mod);
+  const present = [...new Map(entries.map((entry) => [entry.component.id, entry.component])).values()];
 
   return html`
-    ${pageHead('V', c.label, c.heading, c.lead)}
+    ${pageHead('VI', c.label, c.heading, c.lead)}
 
     <section class="section section--tight">
       <div class="wrap wrap--narrow">
-        ${fallback ? html`<p class="fallback mono">${format(t.fallback.changelog, { language: t.languages[fallback.code] })}</p>` : ''}
+        ${fallbackNotice(ctx, entries)}
+        ${modLinks(ctx)}
         <div class="filters" role="toolbar" aria-label="${c.filter}" data-filters hidden>
           <button class="filter" type="button" aria-pressed="true" data-filter="all">${c.all}</button>
           ${present.map((component) => html`<button class="filter" type="button" aria-pressed="false" data-filter="${component.id}">${component.label}</button>`)}
         </div>
-
-        <ol class="timeline">
-          ${changelog.map((entry) => html`
-          <li class="entry" id="${entry.id}" data-component="${entry.component.id}">
-            <div class="entry__meta mono">
-              <span class="entry__tag">${entry.component.label}</span>
-              <span class="entry__ver">${entry.version}</span>
-              ${time(ctx, entry.date)}
-              ${entry.fallback ? html`<span class="entry__lang" title="${t.languages[entry.fallback.code]}">${entry.fallback.short}</span>` : ''}
-            </div>
-            <div class="entry__body"${langAttr(ctx, entry)}>
-              <h2 class="entry__title"><a href="#${entry.id}">${entry.title}</a></h2>
-              <div class="prose prose--compact">${raw(renderMarkdown(entry.body, { headingShift: 2 }))}</div>
-              <a class="inline-link mono" href="${entry.release.url}" rel="noopener" lang="${ctx.locale.lang}">${t.common.releaseOnGithub} ${icon('arrow', 12)}</a>
-            </div>
-          </li>`)}
-        </ol>
+        ${timeline(ctx, entries)}
       </div>
     </section>`;
 }
+
+/** The notes of one mod, on their own. */
+export function modChangelogPage(ctx, mod) {
+  const { t, changelog } = ctx;
+  const entries = changelog.filter((entry) => entry.component.mod && entry.component.id === mod.id);
+
+  return html`
+    ${pageHead('VI', t.changelog.label, format(t.changelog.modHeading, { mod: mod.name }), '')}
+
+    <section class="section section--tight">
+      <div class="wrap wrap--narrow">
+        <a class="back mono" href="${ctx.href('/changelog/')}">${icon('arrowLeft', 12)}${t.changelog.label}</a>
+        ${fallbackNotice(ctx, entries)}
+        ${modLinks(ctx, mod)}
+        ${entries.length ? timeline(ctx, entries) : html`<p class="empty">${t.changelog.none}</p>`}
+      </div>
+    </section>`;
+}
+
+/** A single notice at the top for the notes not translated yet; each carries the badge of the language it is shown in. */
+function fallbackNotice(ctx, entries) {
+  const { t } = ctx;
+  const fallback = entries.find((entry) => entry.fallback)?.fallback;
+  return fallback ? html`<p class="fallback mono">${format(t.fallback.changelog, { language: t.languages[fallback.code] })}</p>` : '';
+}
+
+/** A link to each mod's notes. */
+const modLinks = (ctx, current) => html`
+  <nav class="filters filters--links" aria-label="${ctx.t.changelog.mods}">
+    <span class="filters__label mono">${ctx.t.changelog.mods}</span>
+    ${ctx.mods.map((mod) => html`<a class="filter" href="${ctx.href(`/changelog/${mod.id}/`)}"${mod === current ? html` aria-current="page"` : ''}>${mod.name}</a>`)}
+  </nav>`;
+
+const timeline = (ctx, entries) => html`
+  <ol class="timeline">
+    ${entries.map((entry) => html`
+    <li class="entry" id="${entry.id}" data-component="${entry.component.id}">
+      <div class="entry__meta mono">
+        <span class="entry__tag">${entry.component.label}</span>
+        <span class="entry__ver">${entry.version}</span>
+        ${time(ctx, entry.date)}
+        ${entry.fallback ? html`<span class="entry__lang" title="${ctx.t.languages[entry.fallback.code]}">${entry.fallback.short}</span>` : ''}
+      </div>
+      <div class="entry__body"${langAttr(ctx, entry)}>
+        <h2 class="entry__title"><a href="#${entry.id}">${entry.title}</a></h2>
+        <div class="prose prose--compact">${raw(renderMarkdown(entry.body, { headingShift: 2 }))}</div>
+        <a class="inline-link mono" href="${entry.release.url}" rel="noopener" lang="${ctx.locale.lang}">${ctx.t.common.releaseOnGithub} ${icon('arrow', 12)}</a>
+      </div>
+    </li>`)}
+  </ol>`;
 
 /* ── 404 ────────────────────────────────────────────────────────────────── */
 

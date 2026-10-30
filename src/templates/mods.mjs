@@ -1,21 +1,22 @@
 import { html, raw } from '../lib/html.mjs';
 import { format } from '../i18n/index.mjs';
-import { community, downloadButton, steps } from './home.mjs';
-import { downloadFile, icon, modIcon, modSummary, pageHead, sectionHead, time, title } from './partials.mjs';
+import { community, downloadButton, downloadFile, icon, modIcon, modSummary, pageHead, sectionHead, steps, time, title } from './partials.mjs';
 
 /**
- * The mods page: the official mods (the Stein Loader index's sources) and the third-party ones,
- * each with what it does, its version, its file and where its code is. The Stein Client installs
- * and updates them, so the page leads there first and leaves the manual install for last.
+ * The mods page: the base mods (the Stein Loader index's sources), the official extras and the
+ * third-party ones, each with what it does, its version, its file and where its code is. The Stein
+ * Client installs and updates them, so the page leads there first and leaves the manual install for
+ * last.
  */
 export function modsPage(ctx) {
   const { t, mods } = ctx;
   const m = t.mods;
-  const official = mods.filter((mod) => mod.official);
-  const thirdParty = mods.filter((mod) => !mod.official);
+  const base = mods.filter((mod) => mod.kind === 'base');
+  const extras = mods.filter((mod) => mod.kind === 'extra');
+  const thirdParty = mods.filter((mod) => mod.kind === 'third');
 
   return html`
-    ${pageHead('III', m.label, m.heading, m.lead)}
+    ${pageHead('IV', m.label, m.heading, m.lead)}
 
     <section class="section section--tight">
       <div class="wrap">
@@ -37,12 +38,24 @@ export function modsPage(ctx) {
           <h2 class="section__title" id="t-official">${title(m.officialTitle)}</h2>
           <p class="section__lead">${m.officialLead}</p>
         </header>
-        <div class="mod-list">${official.map((mod) => modCard(ctx, mod))}</div>
+        <div class="mod-list">${base.map((mod) => modCard(ctx, mod))}</div>
       </div>
     </section>
 
+    ${extras.length ? html`
+    <section class="section section--sunken" id="extras" aria-labelledby="t-extras">
+      <div class="wrap">
+        <header class="section__head">
+          ${sectionHead('', m.extraLabel)}
+          <h2 class="section__title" id="t-extras">${title(m.extraTitle)}</h2>
+          <p class="section__lead">${raw(m.extraLeadHtml)}</p>
+        </header>
+        <div class="mod-list">${extras.map((mod) => modCard(ctx, mod))}</div>
+      </div>
+    </section>` : ''}
+
     ${thirdParty.length ? html`
-    <section class="section section--sunken" aria-labelledby="t-third">
+    <section class="section" aria-labelledby="t-third">
       <div class="wrap">
         <header class="section__head">
           ${sectionHead('', m.thirdLabel)}
@@ -79,7 +92,7 @@ function modCard(ctx, mod) {
           <h3 class="card__title">${mod.name}</h3>
           <p class="mod-card__by mono">${format(m.by, { author: mod.author })}</p>
         </div>
-        <span class="mod__tag mono${mod.official ? '' : ' mod__tag--third'}">${mod.official ? m.official : m.thirdParty}</span>
+        <span class="mod__tag mono${mod.kind === 'third' ? ' mod__tag--third' : ''}">${{ base: m.official, extra: m.extra, third: m.thirdParty }[mod.kind]}</span>
       </div>
 
       <p>${modSummary(ctx, mod)}</p>
@@ -91,7 +104,7 @@ function modCard(ctx, mod) {
         <div><dt>${m.needs}</dt><dd>Stein Loader ${mod.loader}+</dd></div>
       </dl>
 
-      ${mod.official ? '' : html`
+      ${mod.kind === 'base' ? '' : html`
       <div class="source-link">
         <span class="source-link__label mono">${m.sourceLabel}</span>
         <div class="source-link__row">
@@ -103,6 +116,7 @@ function modCard(ctx, mod) {
       ${downloadFile(ctx, { name: mod.file, url: mod.url, size: mod.size, sha256: mod.sha256 })}
 
       <div class="mod-card__links mono">
+        <a class="inline-link" href="${ctx.href(`/changelog/${mod.id}/`)}">${t.nav.changelog} ${icon('arrow', 12)}</a>
         <a class="inline-link" href="${mod.homepage}" rel="noopener">${m.code} ${icon('arrow', 12)}</a>
       </div>
     </article>`;

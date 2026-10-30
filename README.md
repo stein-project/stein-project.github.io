@@ -1,6 +1,6 @@
 # Stein Project — website
 
-The Stein Project website: Stein Client downloads, the mods, news and the changelog. It is published on
+The Stein Project website: a front door that splits into the Stein Client and the Stein Loader, the mods, news and the changelog. It is published on
 GitHub Pages in English (the default, at the root), Spanish (`/es/`) and Portuguese (`/pt/`).
 
 The site is static, built by a Node script with no framework. Its look is the Stein Client design system,
@@ -48,17 +48,19 @@ A product with no release doesn't show up. The Stein Client buttons point to
 
 ### Mods
 
-The official mods are the `sources` of the Stein Loader index (`modIndex`, the `stein.json` of the installer's latest release), the same list Stein Client and
-the installer read: a mod added there shows up here on the next build. Third-party mods are the indexes in
-`thirdPartySources`. Each index is a `steinmods.json` published with the mod's releases; the site shows its
-version, file, SHA-256, minimum Loader and, for third-party mods, the source link to paste in Stein Client.
+The base mods are the `sources` of the Stein Loader index (`modIndex`, the `stein.json` of the installer's latest release), the same list Stein Client and
+the installer read: a mod added there shows up here on the next build. The extras are official mods for specific
+servers, the indexes in `extraSources`: Stein Client does not bring them on its own, and one without a release yet
+is left out. Third-party mods are the indexes in `thirdPartySources`. Each index is a `steinmods.json` published with
+the mod's releases; the site shows its version, file, SHA-256, minimum Loader and, for extras and third-party mods,
+the source link to paste in Stein Client.
 
 What each mod does comes from `mods.summaries` and `mods.features` in `src/i18n/<locale>.mjs`; a mod
 without them shows the `description` from its index.
 
 ### Changelog
 
-Every published release of the products and the mods. The notes come from `changelog/<version>.<locale>.md`
+Every published release of the products, on `/changelog/`, and of each mod, on `/changelog/<mod>/`. The notes come from `changelog/<version>.<locale>.md`
 in the public source repository; a version without them shows the English release
 body, without the install instructions and checksums. A locale without its file shows the
 text in English with a badge.
