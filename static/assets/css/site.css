@@ -235,7 +235,19 @@ kbd { color: var(--gold); }
 
 .mod__ico { color: var(--accent); margin-bottom: var(--space-2); }
 
-/* Mods: the cards on the home page and the mods page. */
+/* The front door: Stein Client or Stein Loader. */
+.hero--door { padding-bottom: clamp(40px, 6vw, 72px); }
+.door__mark { width: 72px; height: 72px; }
+.door { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-5); margin-top: clamp(32px, 5vw, 56px); text-align: left; }
+.door__card { display: flex; flex-direction: column; gap: var(--space-4); padding: clamp(24px, 3vw, 40px); color: var(--text-muted); text-decoration: none; }
+.door__top { display: flex; justify-content: space-between; align-items: flex-start; }
+.door__name { font-family: var(--font-display); font-size: clamp(30px, 3.4vw, 44px); line-height: 1.05; color: var(--ink); }
+.door__name em { color: var(--gold); font-style: italic; }
+.door__card .card__link { margin-top: auto; }
+.feed--2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(32px, 5vw, 64px); }
+.feed--2 .feed__block { min-width: 0; }
+
+/* Mods: the cards on the client page and the mods page. */
 .mods { margin-top: var(--space-6); margin-bottom: var(--space-6); }
 .mod { color: var(--text-muted); }
 .mod__top { display: flex; justify-content: space-between; align-items: flex-start; }
@@ -455,6 +467,10 @@ kbd { color: var(--gold); }
   transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
 }
 .filter:hover { color: var(--gold); border-color: var(--gold); }
+.filter[aria-current='page'] { color: var(--gold); border-color: var(--gold); }
+.filters--links { align-items: center; margin-bottom: var(--space-4); }
+.filters__label { font-size: var(--text-micro); letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-faint); margin-right: var(--space-2); }
+.back + .fallback, .back + .filters { margin-top: var(--space-5); }
 .filter[aria-pressed='true'] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 
 .timeline { list-style: none; margin: 0; padding: 0; }
@@ -494,6 +510,7 @@ kbd { color: var(--gold); }
 }
 
 @media (max-width: 900px) {
+  .door, .feed--2 { grid-template-columns: 1fr; }
   :root { --topbar-h: 58px; }
   .topbar__toggle { display: inline-flex; }
   .topbar__inner { gap: var(--space-3); }

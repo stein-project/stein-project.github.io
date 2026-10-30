@@ -9,6 +9,8 @@ export default {
 
   nav: {
     home: 'Proyecto',
+    client: 'Client',
+    loader: 'Loader',
     downloads: 'Descargas',
     mods: 'Mods',
     news: 'Novedades',
@@ -59,6 +61,33 @@ export default {
   languages: { en: 'inglés', es: 'español', pt: 'portugués' },
 
   home: {
+    title: 'Minecraft 1.8.9, *modernizado*.',
+    lead: 'Java 25, LWJGL 3 y más FPS en servidores llenos, con el juego como siempre fue. Elige cómo quieres usarlo.',
+    client: {
+      kind: 'Para jugar',
+      name: 'Client',
+      text: 'El launcher. Inicia sesión con tu cuenta Microsoft y pulsa Jugar: el juego, Java y los mods vienen incluidos.',
+      points: ['Todo se actualiza solo', 'Mods activados con un clic', 'Windows'],
+      go: 'Ir a Stein Client',
+    },
+    loader: {
+      kind: 'Para construir',
+      name: 'Loader',
+      text: 'La plataforma de mods por sí sola, para tu launcher, tu servidor o tus mods.',
+      points: ['Independiente de Forge y Fabric', 'API pública y SDK', 'Windows, Linux y macOS'],
+      go: 'Ir a Stein Loader',
+    },
+    aboutLabel: 'Qué es Stein',
+    about: [
+      ['bolt', 'Más rápido, mismo aspecto', 'Cerca de 10× los FPS de OptiFine con 400 jugadores, medido, y la imagen del juego original.'],
+      ['code', 'Código abierto', 'Todo público en GitHub, bajo licencias abiertas.'],
+      ['shield', 'Para quien tiene el juego', 'Nada de Mojang viene con Stein: el juego se modifica en tu ordenador, a partir de tu copia.'],
+    ],
+  },
+
+  clientPage: {
+    pageTitle: 'Stein Client',
+    description: 'El launcher de un Minecraft 1.8.9 modernizado: más FPS en servidores llenos, el aspecto original intacto y mods que se actualizan solos.',
     hero: {
       title: 'Minecraft 1.8.9, *modernizado*.',
       lead: 'Más FPS en servidores llenos, sin cambiar el aspecto del juego. Descarga Stein Client, inicia sesión y juega: el juego, Java y los mods vienen incluidos y siempre actualizados.',
@@ -150,6 +179,47 @@ export default {
     },
   },
 
+  loaderPage: {
+    pageTitle: 'Stein Loader',
+    description: 'La plataforma de mods de Stein para Minecraft 1.8.9: independiente de Forge y Fabric, con API pública y SDK. Para tu launcher, tu servidor o tus mods.',
+    hero: {
+      title: 'Mods para 1.8.9, *sobre una base propia*.',
+      lead: 'Stein Loader es la plataforma de mods que hay debajo de Stein: independiente de Forge y Fabric, y funciona sin Stein Client.',
+      install: 'Instalar',
+      write: 'Escribir un mod',
+    },
+    what: {
+      label: 'Qué es',
+      title: 'Una base, *no un modpack*.',
+      items: [
+        ['layers', 'Plataforma propia', 'No necesita Forge ni Fabric, y funciona sobre Stein Bridge: Java 25 y LWJGL 3.'],
+        ['grid', 'Una cuadrícula para la pantalla', 'Los elementos de todos los mods comparten la misma cuadrícula y el mismo editor para moverlos.'],
+        ['list', 'Un Panel para todos los mods', 'Cada mod tiene una página de ajustes que se abre en plena partida.'],
+        ['code', 'Una API pequeña y pública', 'Los mods usan una API estable, comprobada en cada build, y no se redistribuye código del juego.'],
+      ],
+    },
+    install: {
+      label: 'Instalar',
+      title: 'En el launcher *que ya usas*.',
+      stepsHtml: [
+        ['Ejecuta 1.8.9 una vez', 'En tu launcher, para tener el juego en el ordenador.'],
+        ['Abre el instalador', 'El <code>SteinLoader-Installer.jar</code>, con Java 8 o superior.'],
+        ['Elige el perfil', 'Selecciona <strong>Stein Loader 1.8.9</strong> y no cambies sus argumentos de Java.'],
+      ],
+    },
+    servers: {
+      label: 'Para servidores',
+      title: 'Tu servidor *sabe qué se está usando*.',
+      leadHtml: 'Como Forge y LiteLoader, Stein Loader informa al servidor, por el canal <code>SteinLoader</code>, de sus versiones y de los mods en uso.',
+    },
+    mods: {
+      label: 'Para autores',
+      title: 'Escribe *tu mod*.',
+      leadHtml: 'El SDK trae la API, un plugin de Gradle, una plantilla de proyecto y un ejemplo. Publica un <code>steinmods.json</code> con tus releases y los jugadores añaden tu mod por su enlace. Mira los que ya existen en la <a class="inline-link" href="{mods}">página de mods</a>.',
+    },
+    notes: 'Últimas versiones',
+  },
+
   community: {
     title: 'Novedades, soporte *y dudas*.',
     lead: 'Versiones, anuncios y ayuda para instalar: todo sucede en el Discord de Stein Project.',
@@ -177,10 +247,10 @@ export default {
 
   mods: {
     title: 'Mods',
-    description: 'Los mods de Stein Loader: HUD, Connect, Keybind y Replay. Stein Client los instala y actualiza por ti.',
+    description: 'Los mods de Stein Loader: los de la base, que vienen con Stein Client, y los extras oficiales para servidores específicos.',
     label: 'Mods',
     heading: 'Mods que *se actualizan solos*.',
-    lead: 'Todos los mods de aquí funcionan en Stein Loader y cambian solo lo que ves y las herramientas que tienes: el juego sigue igual que el vanilla, en cualquier servidor.',
+    lead: 'Todos los mods de aquí funcionan en Stein Loader. Los de la base vienen con Stein Client; los extras los añades tú.',
     howTitle: 'En Stein Client, *con un clic*.',
     howStepsHtml: [
       ['Abre la pestaña Mods', 'Los mods oficiales aparecen ahí. Activa los que quieras.'],
@@ -188,10 +258,14 @@ export default {
       ['Pulsa Jugar', 'El launcher descarga los mods, comprueba el SHA-256 de cada archivo y los mantiene actualizados.'],
     ],
     official: 'Oficial',
+    extra: 'Extra',
     thirdParty: 'Terceros',
-    officialLabel: 'Oficiales',
+    officialLabel: 'Base',
     officialTitle: 'Hechos y mantenidos *por Stein Project*.',
-    officialLead: 'Código abierto bajo la Mozilla Public License 2.0, listados en Stein Client desde el principio.',
+    officialLead: 'Código abierto bajo la Mozilla Public License 2.0, listados en Stein Client desde el principio. Cambian solo lo que ves y las herramientas que tienes, y funcionan en cualquier servidor.',
+    extraLabel: 'Extras',
+    extraTitle: 'Oficiales, *para servidores específicos*.',
+    extraLeadHtml: 'También son de Stein Project, pero no vienen solos en Stein Client: cada uno sirve a algunos servidores. Para usarlo, copia su <strong>enlace de la fuente</strong> y pégalo en <strong>Mods → Añadir fuente</strong>; se actualiza como los demás. Algunos servidores no permiten algunos de ellos: consulta las reglas de donde juegas.',
     thirdLabel: 'De terceros',
     thirdTitle: 'De *otros autores*.',
     thirdLeadHtml: 'No los mantiene Stein Project. Para instalar uno en Stein Client, copia su <strong>enlace de la fuente</strong> y pégalo en <strong>Mods → Añadir fuente</strong>. Añade solo fuentes de autores en los que confíes: un mod se ejecuta dentro de tu juego.',
@@ -206,16 +280,22 @@ export default {
     copied: 'Copiado',
     code: 'Código fuente',
     summaries: {
-      hud: 'HUD personalizable, minimapa y una lista del Tab para servidores llenos.',
+      hud: 'HUD personalizable y una lista del Tab para servidores llenos.',
       connect: 'Cuentas, reconexión automática y proxy SOCKS5.',
       keybind: 'Mensajes y comandos en una tecla.',
       replay: 'Replay de la muerte: mira cómo moriste antes de reaparecer.',
+      minimap: 'Un minimapa en la cuadrícula de la HUD: terreno o solo radar.',
+      mouse: 'Mantén Shift y arrastra por el inventario para mover pila tras pila.',
+      combat: 'Para PvP: aliados y clanes, el enemigo más cercano y automatizaciones de combate.',
     },
     features: {
-      hud: ['Armadura, efectos, brújula, rendimiento, inventario y tu objetivo actual', 'Minimapa: terreno detallado o solo radar, cuadrado o redondo', 'Lista del Tab para hasta 500 jugadores, con filtros, orden y grupos por clan'],
+      hud: ['Armadura, efectos, brújula, rendimiento e inventario', 'Una cuadrícula para colocar todo en la pantalla', 'Lista del Tab para hasta 500 jugadores, con filtros, orden y grupos por clan'],
       connect: ['Nicks offline, y de vuelta a tu cuenta Microsoft con un clic', 'Reconexión con cuenta atrás tras una caída, un kick o un servidor lleno', 'Proxy SOCKS5 con usuario y contraseña, y una prueba de conexión'],
       keybind: ['Una tecla, o un botón del ratón, con Ctrl, Shift o Alt opcional', 'Varios mensajes en una tecla, espaciados para que el servidor no te expulse por spam', 'Enviados exactamente como si los escribieras en el chat'],
       replay: ['Al morir, los últimos segundos de la pelea se repiten en la pantalla de reaparecer', 'Cámara de dron, y el golpe final desde los ojos de quien te mató', 'Cada muerte guardada, para verla otra vez fuera del servidor'],
+      minimap: ['Terreno detallado o solo radar, cuadrado o redondo', 'Jugadores, mobs y spawners en el mapa', 'Un lugar propio en la cuadrícula de la HUD'],
+      mouse: ['Mantén Shift y arrastra por el inventario o un cofre', 'Pila tras pila, sin un clic para cada una'],
+      combat: ['Aliados y enemigos por nick o clan, con sus colores en el Tab y sobre la cabeza', 'El enemigo y el aliado más cercanos en la HUD', 'Automatizaciones con tecla propia: cada una es tu elección'],
     },
   },
 
@@ -234,12 +314,16 @@ export default {
 
   changelog: {
     title: 'Changelog',
-    description: 'Notas de todas las versiones publicadas de Stein Client, Stein Loader, los mods y el SDK.',
+    description: 'Notas de todas las versiones publicadas de Stein Client, Stein Loader y el SDK. Cada mod tiene su página.',
     label: 'Changelog',
     heading: 'Cada versión, *qué cambió*.',
-    lead: 'Notas de todas las versiones publicadas de Stein Client, Stein Loader, los mods y el SDK.',
+    lead: 'Notas de todas las versiones publicadas de Stein Client, Stein Loader y el SDK. Cada mod tiene su página.',
     filter: 'Filtrar por componente',
     all: 'Todos',
+    mods: 'Mods',
+    none: 'Todavía no hay notas publicadas.',
+    modHeading: '{mod}, *qué cambió*.',
+    modDescription: 'Notas de todas las versiones publicadas del mod {mod}.',
   },
 
   notFound: {

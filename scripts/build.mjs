@@ -20,11 +20,13 @@ import config from '../site.config.mjs';
 import { toString } from '../src/lib/html.mjs';
 import { loadData } from '../src/lib/github.mjs';
 import { latestDownloads, loadChangelog, loadNews, localize } from '../src/lib/content.mjs';
-import { checkDictionaries, DEFAULT_LOCALE, LOCALES } from '../src/i18n/index.mjs';
+import { checkDictionaries, DEFAULT_LOCALE, format, LOCALES } from '../src/i18n/index.mjs';
 import { layout, SCRIPTS, STYLESHEETS } from '../src/templates/layout.mjs';
+import { clientPage } from '../src/templates/client.mjs';
 import { home } from '../src/templates/home.mjs';
+import { loaderPage } from '../src/templates/loader.mjs';
 import { modsPage } from '../src/templates/mods.mjs';
-import { changelogPage, downloadsPage, feed, newsPage, notFoundPage, postPage, sitemap } from '../src/templates/pages.mjs';
+import { changelogPage, downloadsPage, feed, modChangelogPage, newsPage, notFoundPage, postPage, sitemap } from '../src/templates/pages.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = path.join(ROOT, 'dist');
@@ -47,8 +49,8 @@ async function main() {
   const posts = await loadNews(path.join(CONTENT, 'news'), { drafts });
   const changelog = loadChangelog(config, data);
   const downloads = latestDownloads(config.products, data.products);
-  // Official mods first, in the order of the index; then the third-party ones.
-  const mods = [...data.mods.filter((mod) => mod.official), ...data.mods.filter((mod) => !mod.official)];
+  // The base mods first, in the order of the index; then the extras and the third-party ones.
+  const mods = ['base', 'extra', 'third'].flatMap((kind) => data.mods.filter((mod) => mod.kind === kind));
 
   await rm(DIST, { recursive: true, force: true });
   await cp(STATIC, DIST, { recursive: true });
@@ -88,10 +90,20 @@ async function main() {
 
     const pages = [
       { key: 'home', path: '/', content: home(ctx), date: buildDate },
+      { key: 'client', path: '/client/', title: t.clientPage.pageTitle, description: t.clientPage.description, content: clientPage(ctx), date: buildDate },
+      { key: 'loader', path: '/loader/', title: t.loaderPage.pageTitle, description: t.loaderPage.description, content: loaderPage(ctx), date: buildDate },
       { key: 'downloads', path: '/downloads/', title: t.downloads.title, description: t.downloads.description, content: downloadsPage(ctx), date: buildDate },
       { key: 'mods', path: '/mods/', title: t.mods.title, description: t.mods.description, content: modsPage(ctx), date: buildDate },
       { key: 'news', path: '/news/', title: t.news.title, description: t.news.description, content: newsPage(ctx), date: ctx.posts[0]?.date },
       { key: 'changelog', path: '/changelog/', title: t.changelog.title, description: t.changelog.description, content: changelogPage(ctx), date: ctx.changelog[0]?.date },
+      ...mods.map((mod) => ({
+        key: 'changelog',
+        path: `/changelog/${mod.id}/`,
+        title: `${t.changelog.title}: ${mod.name}`,
+        description: format(t.changelog.modDescription, { mod: mod.name }),
+        content: modChangelogPage(ctx, mod),
+        date: ctx.changelog.find((entry) => entry.component.id === mod.id)?.date,
+      })),
       ...ctx.posts.map((post) => ({
         key: 'news',
         path: `/news/${post.slug}/`,

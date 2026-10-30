@@ -10,7 +10,7 @@ const CHANGELOG_FILE = /^(\d+(?:\.\d+)*)\.([a-z]{2}_[A-Z]{2})\.md$/;
  * for the offline build (`--offline`) used in local development:
  *
  *   products   releases of each product, by product id
- *   mods       every mod from the official and third-party sources, with its releases
+ *   mods       every mod from the base, extra and third-party sources, with its releases
  *   notes      changelog files by repository, version and changelog locale (en_US, pt_BR...)
  *
  * With GITHUB_TOKEN in the environment (CI has one), the API limit goes from 60 to 1,000+ an
@@ -31,15 +31,19 @@ export async function loadData({ config, cacheDir, offline }) {
 
   const index = await firstJson(config.modIndex);
   const sources = [
-    ...(index.sources ?? []).map((url) => ({ url, official: true })),
-    ...config.thirdPartySources.map((url) => ({ url, official: false })),
+    ...(index.sources ?? []).map((url) => ({ url, kind: 'base' })),
+    ...config.extraSources.map((url) => ({ url, kind: 'extra' })),
+    ...config.thirdPartySources.map((url) => ({ url, kind: 'third' })),
   ];
 
   const [products, modLists] = await Promise.all([
     Promise.all(config.products.map(async (product) => [product.id, await productReleases(product.releases)])),
     Promise.all(sources.map(loadSource)),
   ]);
-  const mods = modLists.flat();
+  const all = modLists.flat();
+  // A mod that became an extra may still be in the published index for a while.
+  const extras = new Set(all.filter((mod) => mod.kind === 'extra').map((mod) => mod.id));
+  const mods = all.filter((mod) => mod.kind !== 'base' || !extras.has(mod.id));
 
   const repos = new Set([...config.products.map((product) => product.changelog).filter(Boolean), ...mods.map((mod) => mod.repo)]);
   const notes = Object.fromEntries(await Promise.all([...repos].map(async (repo) => [repo, await fetchChangelog(repo)])));
@@ -51,9 +55,14 @@ export async function loadData({ config, cacheDir, offline }) {
 }
 
 /** The mods of one steinmods.json, each with the releases of the repository it comes from. */
-async function loadSource({ url, official }) {
-  const index = await fetchJson(url);
-  const repo = repoOf(index.homepage) ?? repoOf(url);
+async function loadSource({ url, kind }) {
+  const index = await fetchJson(url).catch((error) => {
+    if (kind !== 'extra') throw error;
+    console.warn(`warning: ${url} has no release yet; it is left out`);
+    return { mods: [] };
+  });
+  // The address of an extra is the current one: its index may still name a repository it moved from.
+  const repo = (kind === 'extra' ? repoOf(url) : null) ?? repoOf(index.homepage) ?? repoOf(url);
   if (!repo) throw new Error(`${url}: no GitHub repository in "homepage" or in the source address`);
   const releases = await fetchReleases(repo);
 
@@ -69,10 +78,10 @@ async function loadSource({ url, official }) {
       loader: mod.loader,
       description: mod.description ?? '',
       author: index.author ?? '',
-      homepage: index.homepage ?? `https://github.com/${repo}`,
+      homepage: kind === 'extra' ? `https://github.com/${repo}` : index.homepage ?? `https://github.com/${repo}`,
       source: url,
       repo,
-      official,
+      kind,
       publishedAt: release?.publishedAt ?? null,
       size: release?.assets.find((asset) => asset.name === mod.file)?.size ?? null,
       releases,
@@ -175,7 +184,7 @@ async function fetchChangelog(repo) {
  *   assets: { name: string, size: number, url: string, sha256: string | null }[] }} Release
  * @typedef {{ id: string, name: string, file: string, version: string, url: string, sha256: string,
  *   loader: string, description: string, author: string, homepage: string, source: string, repo: string,
- *   official: boolean, publishedAt: string | null, size: number | null, releases: Release[] }} Mod
+ *   kind: 'base' | 'extra' | 'third', publishedAt: string | null, size: number | null, releases: Release[] }} Mod
  * @typedef {{ products: Record<string, Release[]>, mods: Mod[],
  *   notes: Record<string, Record<string, Record<string, string>>> }} SiteData
  */
