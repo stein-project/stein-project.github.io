@@ -212,8 +212,8 @@ export default {
     },
     servers: {
       label: 'For servers',
-      title: 'Your server *knows what is running*.',
-      leadHtml: 'Like Forge and LiteLoader, the Stein Loader tells the server, on the <code>SteinLoader</code> channel, its versions and the mods in use.',
+      title: 'Your server *knows, and decides*.',
+      leadHtml: 'Like Forge and LiteLoader, the Stein Loader tells the server, on the <code>SteinLoader</code> channel, its versions and the mods in use. A server can ask, on the same channel, to turn off a whole mod or one of its features while the player is there, and the Loader takes it out of the game and reports what is off. It stops when the player leaves, and it is a request: a changed client can ignore it.',
     },
     mods: {
       label: 'For authors',
@@ -298,7 +298,7 @@ export default {
       replay: ['When you die, the last seconds of the fight replay on the respawn screen', 'A drone camera, and the final blow through your killer’s eyes', 'Every death saved, to watch again outside a server'],
       minimap: ['Detailed terrain or radar only, square or round', 'Players, mobs and spawners on the map', 'A place of its own on the HUD grid'],
       mouse: ['Hold Shift and drag across an inventory or a chest', 'Stack after stack, without a click for each one'],
-      combat: ['Allies and enemies by nick or clan, with their colors in the Tab list and above heads', 'The nearest enemy and the nearest ally on the HUD', 'Automations with a key of their own: each one is your choice'],
+      combat: ['Allies and enemies by nick or clan, with their colors in the Tab list and above heads', 'Your target’s health, armor and held item on the HUD grid', 'Automations with a key of their own: each one is your choice, and a server can turn it off'],
     },
   },
 

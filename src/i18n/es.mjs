@@ -209,8 +209,8 @@ export default {
     },
     servers: {
       label: 'Para servidores',
-      title: 'Tu servidor *sabe qué se está usando*.',
-      leadHtml: 'Como Forge y LiteLoader, Stein Loader informa al servidor, por el canal <code>SteinLoader</code>, de sus versiones y de los mods en uso.',
+      title: 'Tu servidor *sabe y decide*.',
+      leadHtml: 'Como Forge y LiteLoader, Stein Loader informa al servidor, por el canal <code>SteinLoader</code>, de sus versiones y de los mods en uso. Por el mismo canal, el servidor puede pedir que se desactive un mod entero o una de sus funciones mientras el jugador esté allí, y el Loader lo saca del juego e informa de lo desactivado. Todo vuelve cuando el jugador se va. Es una petición: un cliente modificado puede ignorarla.',
     },
     mods: {
       label: 'Para autores',
@@ -295,7 +295,7 @@ export default {
       replay: ['Al morir, los últimos segundos de la pelea se repiten en la pantalla de reaparecer', 'Cámara de dron, y el golpe final desde los ojos de quien te mató', 'Cada muerte guardada, para verla otra vez fuera del servidor'],
       minimap: ['Terreno detallado o solo radar, cuadrado o redondo', 'Jugadores, mobs y spawners en el mapa', 'Un lugar propio en la cuadrícula de la HUD'],
       mouse: ['Mantén Shift y arrastra por el inventario o un cofre', 'Pila tras pila, sin un clic para cada una'],
-      combat: ['Aliados y enemigos por nick o clan, con sus colores en el Tab y sobre la cabeza', 'El enemigo y el aliado más cercanos en la HUD', 'Automatizaciones con tecla propia: cada una es tu elección'],
+      combat: ['Aliados y enemigos por nick o clan, con sus colores en el Tab y sobre la cabeza', 'Vida, armadura y objeto de tu objetivo en la cuadrícula de la HUD', 'Automatizaciones con tecla propia: cada una es tu elección, y un servidor puede desactivarla'],
     },
   },
 

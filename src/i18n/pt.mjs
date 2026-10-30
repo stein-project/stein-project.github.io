@@ -161,7 +161,7 @@ export default {
       title: 'Só para quem tem *o jogo original*.',
       itemsHtml: [
         ['shield', 'Nenhum arquivo da Mojang', 'O Stein não contém o Minecraft. As modificações são aplicadas localmente, sobre a cópia do próprio jogador, e o <code>1.8.9.jar</code> original permanece intacto.'],
-        ['share', 'Transparente com servidores', 'Como o Forge e o LiteLoader, o Stein Loader informa ao servidor, pelo canal <code>SteinLoader</code>, as suas versões e os mods em uso.'],
+        ['share', 'Transparente com servidores', 'Como o Forge e o LiteLoader, o Stein Loader informa ao servidor, pelo canal <code>SteinLoader</code>, as suas versões e os mods em uso. Pelo mesmo canal, o servidor pode pedir para desligar um mod inteiro ou um recurso dele enquanto o jogador estiver lá, e o Loader tira isso do jogo e informa o que está desligado. Tudo volta quando o jogador sai. É um pedido: um cliente alterado pode ignorar.'],
         ['ban', 'Sem modpacks prontos', 'Não distribuímos modpacks, instalações prontas do Minecraft nem mods de terceiros adaptados.'],
       ],
     },
@@ -209,8 +209,8 @@ export default {
     },
     servers: {
       label: 'Para servidores',
-      title: 'O seu servidor *sabe o que está rodando*.',
-      leadHtml: 'Como o Forge e o LiteLoader, o Stein Loader informa ao servidor, pelo canal <code>SteinLoader</code>, as suas versões e os mods em uso.',
+      title: 'O seu servidor *sabe e decide*.',
+      leadHtml: 'Como o Forge e o LiteLoader, o Stein Loader informa ao servidor, pelo canal <code>SteinLoader</code>, as suas versões e os mods em uso. Pelo mesmo canal, o servidor pode pedir para desligar um mod inteiro ou um recurso dele enquanto o jogador estiver lá, e o Loader tira isso do jogo e informa o que está desligado. Tudo volta quando o jogador sai. É um pedido: um cliente alterado pode ignorar.',
     },
     mods: {
       label: 'Para autores',
@@ -295,7 +295,7 @@ export default {
       replay: ['Quando você morre, os últimos segundos da luta passam na tela de renascer', 'Câmera de drone, e o golpe final pelos olhos de quem te matou', 'Toda morte guardada, para rever fora do servidor'],
       minimap: ['Terreno detalhado ou só radar, quadrado ou redondo', 'Jogadores, mobs e spawners no mapa', 'Um lugar próprio na grade da HUD'],
       mouse: ['Segure Shift e arraste pelo inventário ou por um baú', 'Pilha após pilha, sem um clique para cada uma'],
-      combat: ['Aliados e inimigos por nick ou clã, com as cores deles no Tab e sobre a cabeça', 'O inimigo e o aliado mais próximos na HUD', 'Automações com tecla própria: cada uma é escolha sua'],
+      combat: ['Aliados e inimigos por nick ou clã, com as cores deles no Tab e sobre a cabeça', 'Vida, armadura e item do seu alvo na grade da HUD', 'Automações com tecla própria: cada uma é escolha sua, e um servidor pode desligá-la'],
     },
   },
 
